@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BetaTestApp</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="enter">Enter</string>
+
+    <string name="actual_time">Actual time: %1$d</string>
+    <string name="comment">Comment: %1$s</string>
+    <string name="pair">Pair: %1$s</string>
+    <string name="cmd">Cmd: %1$d</string>
+    <string name="trading_system">Trading System: %1$d</string>
+    <string name="period">Period: %1$s</string>
+    <string name="price">Price: %1$f</string>
+    <string name="sl">Sl: %1$f</string>
+    <string name="tp">Tp: %1$f</string>
+
+    <string name="fill_fields">Fill all fields!</string>
+</resources>
