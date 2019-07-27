@@ -11,22 +11,31 @@ import com.st18rai.betatestapp.utils.RxUtil;
 public class LoginViewModel extends ViewModel {
 
     private final MutableLiveData<String> passKey = new MutableLiveData<>();
+    private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public LiveData<String> getPassKey() {
         return passKey;
     }
-
     private void setPassKey(String key) {
         passKey.setValue(key);
+    }
+
+
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
+    private void setErrorMessage(String message) {
+        errorMessage.setValue(message);
     }
 
     // Must be in repository. Made for simplicity
     public void loginUser(LoginModel loginModel) {
         RxUtil.networkConsumer(ApiClient.getApiInterface().login(loginModel),
-                responseBody -> {
-                    setPassKey(responseBody.string());
-                },
-                Throwable::printStackTrace);
+                responseBody -> setPassKey(responseBody.string()),
+                throwable -> {
+                    throwable.printStackTrace();
+                    setErrorMessage(throwable.getMessage());
+                });
     }
 
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -12,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.st18rai.betatestapp.R;
 import com.st18rai.betatestapp.interfaces.Constants;
 import com.st18rai.betatestapp.model.LoginModel;
@@ -25,10 +25,10 @@ import butterknife.OnClick;
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.login)
-    TextInputEditText login;
+    EditText login;
 
     @BindView(R.id.password)
-    TextInputEditText password;
+    EditText password;
 
     @BindView(R.id.login_box)
     CardView loginBox;
@@ -49,13 +49,16 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // for test
-        login.setText("20234561");
-        password.setText("ladevi31");
+//        login.setText("20234561");
+//        password.setText("ladevi31");
 
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
-        loginViewModel.getPassKey().observe(this, key -> {
-            navigateToMainScreen(key);
+        loginViewModel.getPassKey().observe(this, this::navigateToMainScreen);
+
+        loginViewModel.getErrorMessage().observe(this, message -> {
+            showProgress(false);
+            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -63,10 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.button_login)
     public void onLoginClick() {
 
-        String userLogin = login.getText().toString();
-        String userPassword = password.getText().toString();
-
-        if (!TextUtils.isEmpty(userLogin) || !TextUtils.isEmpty(userPassword)) {
+        if (isFieldsCorrect(login, password)) {
 
             showProgress(true);
 
@@ -75,6 +75,13 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, getString(R.string.fill_fields), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean isFieldsCorrect(EditText login, EditText password) {
+        String userLogin = login.getText().toString();
+        String userPassword = password.getText().toString();
+
+        return !TextUtils.isEmpty(userLogin) && !TextUtils.isEmpty(userPassword);
     }
 
     private void navigateToMainScreen(String passKey) {

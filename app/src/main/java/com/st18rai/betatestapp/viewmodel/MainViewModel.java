@@ -27,8 +27,8 @@ public class MainViewModel extends ViewModel {
                             String passKey) {
 
         RxUtil.networkConsumer(ApiClient.getApiInterface().getSignalsList(login,
-                tradingSystems, pairs, from, to, passKey), itemData ->
-                        setSignals(itemData),
-                throwable -> throwable.printStackTrace());
+                tradingSystems, pairs, from, to, passKey),
+                this::setSignals,
+                Throwable::printStackTrace);
     }
 }
